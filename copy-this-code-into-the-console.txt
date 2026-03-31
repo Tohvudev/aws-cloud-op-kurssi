@@ -1,0 +1,30 @@
+# STABLE
+
+sudo dnf install -y python3-pip
+sudo pip3 install flask
+cat << 'PY' > app.py
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def h(): return '<h1>STABLE v1.0</h1><p>WORKING RIGHT! CONGRATS.</p>'
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
+PY
+sudo python3 app.py
+
+
+# CANARY
+
+sudo dnf install -y python3-pip
+sudo pip3 install flask
+cat << 'PY' > /home/ec2-user/app.py
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def h():
+    # Here im trying to force a 500 error for better logging later in phase 2. I might change it alltogether.
+    return '<h1>CANARY v2.0</h1><p style="color:red;">CRITICAL ERROR</p>', 500
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
+PY
+sudo python3 /home/ec2-user/app.py
